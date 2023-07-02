@@ -654,3 +654,873 @@ Container(
                     ),
                 ),
 
+///////////////////////////////////////////////// USER INPUT  ////////////////////////////////////////
+
+1. Define TextControllers as global first these will take and store input from text fields
+
+    var emailText = TextEditingController();
+    var passText = TextEditingController();
+
+2. Important properties of TextField are enabled, controller, and decoration(inputDecoration -> focused, enabled,disabled)
+
+
+    Center(
+        child: Container(
+          width: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, //used for center alignment of list
+            children: [
+
+              TextField(
+                keyboardType: TextInputType.emailAddress, //Define type of entry
+                enabled: true,
+                controller: emailText, //TextEditingController emailText made as global above
+
+                decoration: InputDecoration(
+
+                  hintText: "E-Mail",
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        borderSide: BorderSide(
+                            color: Colors.deepOrange,
+                          width: 2
+                        )
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(21),
+                      borderSide: BorderSide(
+                        color: Colors.deepPurple,
+                        width: 2
+                      )
+
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 2
+                        )
+
+                    ),
+
+                    // suffixText: "Username",
+                    suffixIcon: IconButton(onPressed: ()
+                    {
+                      print("Email button pressed.");
+
+                      },
+                        icon: Icon(Icons.remove_red_eye, color: Colors.deepPurple,
+                        )
+                    ),
+
+
+                  
+                ),
+              ),
+
+
+              Container(
+                height: 11,
+              ),
+
+
+              TextField(
+                enabled: true,
+                controller: passText,
+                obscureText: true, //hide text
+                keyboardType: TextInputType.visiblePassword,  //To hide password input
+                
+                decoration: InputDecoration(
+                    hintText: "Password",
+                    focusedBorder: OutlineInputBorder(  //when textbox is selected
+                        borderRadius: BorderRadius.circular(21),
+                        borderSide: BorderSide(
+                            color: Colors.deepOrange,
+                            width: 2
+                        )
+                    ),
+                    enabledBorder: OutlineInputBorder(   //when textbox is enabled
+                        borderRadius: BorderRadius.circular(21),
+                        borderSide: BorderSide(
+                            color: Colors.deepPurple,
+                            width: 2
+                        )
+
+                    ),
+                    disabledBorder: OutlineInputBorder( //when textbox is disabled
+                        borderRadius: BorderRadius.circular(21),
+                        borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 2
+                        )
+
+                    ),
+
+                    // suffixText: "Password",
+
+
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        borderSide: BorderSide(
+                            color: Colors.deepOrange
+                        )
+                    )
+                ),
+              ),
+
+              Container(
+                height: 11,
+              ),
+              
+              ElevatedButton(onPressed: (){
+                String uEmail = emailText.text; //taking input from text fields and storing it
+                String uPass = passText.text;
+                print("Email: ${emailText.text}");
+                print("Password: ${passText.text}");
+
+              }, child: Text("Login"))
+
+
+            ],
+          ),
+        )
+      ),
+
+
+
+//////////////////////////////////////////////// GRID VIEW  ////////////////////////////////////////
+   
+1. It is automatically scrollable
+2. Mainly three types:
+    - GridView.count
+    - GridView.extent
+    - GridView.builder
+
+
+* GridView.count
+
+    Padding(
+            padding: const EdgeInsets.all(13.0),
+            child: GridView.count(
+              //crossAxisCount, children are main properties
+              crossAxisCount: 3, //No. of columns
+              crossAxisSpacing: 13, //Space between Columns
+              mainAxisSpacing: 13,  //Space between Rows
+
+              children: [
+                Container(
+                  color: colors[0],
+                ),
+                Container(
+                  color: colors[1],
+                ),
+                Container(
+                  color: colors[2],
+                ),
+                Container(
+                  color: colors[3],
+                ),
+                Container(
+                  color: colors[4],
+                ),
+              ],
+            ),
+          ),
+
+3. You can also use GridView.extent when you dont want to define
+a specific no of columns for each row and instead you want to
+define maximum width of widget.
+    
+    Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: GridView.extent(
+            maxCrossAxisExtent: 500,
+            crossAxisSpacing: 13, //Space between Columns
+            mainAxisSpacing: 13,
+            children: [
+              Container(
+                color: colors[0],
+              ),
+              Container(
+                color: colors[1],
+              ),
+              Container(
+                color: colors[2],
+              ),
+              Container(
+                color: colors[3],
+              ),
+              Container(
+                color: colors[4],
+              ),
+            ],
+          )),
+
+4. You can also use GridView.builder when you need dynamic list of elements 
+of similar type
+
+    GridView.builder(
+          itemCount: colors.length,
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 300,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
+          //OR YOU CAN USE SilverGridDelegateWithMaxCrossCount()
+          itemBuilder: (context, index) {
+            //press ctrl+space for automatic syntax
+            return Container(
+              color: colors[index],
+            );
+          },
+        ),
+
+
+//////////////////////////////////////////////// CALLBACK FUNXNS  /////////////////////////////////////
+   
+///Whenever we need to reuse the function somewhere or instead of
+///defining onPressed function for multiple buttons again and again,
+///we can globally define a funtion in that class and pass it as argument
+///in widget
+///For Example:
+   
+   void callback() {
+    print("Clicked");
+  }
+
+///This function can now be used directly as an argument in mutiple places
+   
+   ElevatedButton(
+            child: Text("Click"),
+            
+            //Instead of defining funtion like this
+            // onPressed: () {
+            //   print("Clicked");
+            // },
+
+            onPressed: callback,
+          ),
+
+//////////////////////////////////////////////// CUSTOM WIDGET  /////////////////////////////////////      
+///It is used mainly in order to reduce redundancy
+///For example, if we are going to use the same kind of decorated
+///container in our app again and again, we will just define a 
+///custom widget for it and then use it.
+/// It is highly recommended to use as many custom widgets in 
+/// your app as it helps reduce redundancy a lot and can save a 
+/// lot of time, even when updating
+/// It also increases readability
+/// 
+/// 1. Create a custom widget and make a seperate class for it:
+   
+    class InstagramStoryScrollView extends StatelessWidget {
+      
+      @override
+      Widget build(BuildContext context) {
+        return Expanded(
+          flex: 1,
+          child: Container(
+            color: Colors.deepPurple,
+            child: ListView.builder(
+              //padding: EdgeInsets.all(8),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 70,
+                    child: CircleAvatar(
+                      child: Text("$index"),
+                      maxRadius: 50,
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                );
+              },
+              itemCount: DashBoardScreen().colors.length,
+            ),
+          ),
+        );
+      }
+    }
+    class ContactsListView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 4,
+      child: Container(
+        color: DashBoardScreen().colors[1],
+        child: ListView.builder(
+          //padding: EdgeInsets.all(8),
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Text("$index"),
+                  maxRadius: 50,
+                  backgroundColor: Colors.white,
+                ),
+                title: Text("Hello " + "$index"),
+                trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: DashBoardScreen().callback),
+              ),
+            );
+          },
+          itemCount: DashBoardScreen().colors.length,
+        ),
+      ),
+    );
+  }
+}
+
+class CardGridView extends StatelessWidget {
+  @override
+  Widget build(Object context) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        color: Colors.white,
+        child: GridView.builder(
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.all(8),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(11),
+                    color: DashBoardScreen().colors[index]),
+              ),
+            );
+          },
+          itemCount: DashBoardScreen().colors.length,
+        ),
+      ),
+    );
+  }
+}
+
+/// 2. Use the class directly in the screen that you want to use it on
+   
+   body: Center(
+            child: Column(
+      children: [
+        InstagramStoryScrollView(),
+        ContactsListView(),
+        CardGridView(),
+      ],
+    ))
+
+//////////////////////////////////////////////// STACK WIDGET  /////////////////////////////////////    
+///Stack is used for overlapping multiple widgets
+///First widget in stack stays lowest position
+///First widget should be bigger in size than 
+///For example: Having text and an image, overlaid
+/// with a gradient abd a button attached to the bottom
+///Stack has children property for sub-widgets
+///
+   
+   Container(
+          height: 600,
+          width: 600,
+          child: Stack(
+            children: [
+              Container(
+                height: 300,
+                width: 300,
+                decoration: BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.circular(21)),
+              ),
+              Positioned(
+                left: 70,
+                top: 70,
+                child: Container(
+                  height: 250,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 2, 186, 24),
+                      borderRadius: BorderRadius.circular(21)),
+                ),
+              ),
+              Positioned(
+                left: 130,
+                top: 130,
+                child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(21)),
+                ),
+              ),
+              Positioned(
+                left: 170,
+                top: 170,
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  margin: EdgeInsets.only(left: 20, top: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(21)),
+                ),
+              )
+            ],
+          ),
+        )
+
+
+//////////////////////////////////////////////// CUSTOM WIDGET ////////////////////////////////////////////////
+///A custom widget can be defined and used all over the application
+///again and again
+///It is useful to reduce code redundancy and helps with readability
+///We can define a custom style for a widget
+///1. Create a folder called 'widgets' under lib folder
+///2. Make a dart file named 'blah_blah_widget.dart'
+///3. In that dart file, define the widget class extending
+///   from Stateless or Stateful class
+///4. Create a constructor defining all he properties of Widget
+///5. For example we have defined constructor for RoundedButton as follows:
+  class RoundedButton extends StatelessWidget {
+    final String btnName;
+    final Icon? icon;   //The '?' says that value can be null
+    final Color bgColor;
+    final TextStyle? textStyle;
+    final VoidCallback? callBack; //Void call back funtion is a funtion which does not
+                                  //take any arguments and returns void
+
+    RoundedButton(
+        {required this.btnName,           //required keyword defines that parameter is necesarry for user to input
+        this.bgColor = Colors.deepPurple, //default value provided
+        this.callBack,
+        this.icon,
+        this.textStyle}) {
+      print("hello");
+    }
+  }
+
+///6. Define your custom widget using all the properties
+///Here we have defined a rounded rectangular button which can take a text input,icon, bgColor, textStyle, etc
+///If icon gets passed as an argument, it will use icon and text both, else only text
+  
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        width: 120,
+        child: ElevatedButton(
+          onPressed: () {
+            callBack!(); //The '!' mark says that callBack will NOT be null
+          },
+          child: icon != null
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  //icon!=null means if icon is not null then return Row
+                  //or if there is no icon, return only text
+                  //if else can also be used directly
+                  children: [
+                    Text(
+                      btnName,
+                      style: textStyle,
+                    ),
+                    SizedBox(width: 11),
+                    icon!,
+                  ],
+                )
+              : Text(//The ':' serves as else statement (If icon null, return Text only)
+                  btnName,
+                  style: textStyle,
+                ), 
+
+          style: ElevatedButton.styleFrom(
+              primary: bgColor,
+              shadowColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21))),
+        ),
+      ),
+    );
+  }
+
+//////////////////////////////////////////////// WRAP WIDGET ////////////////////////////////////////////////
+///It is used when in a row, items are overflowing, the widgets wrap over to the next line
+///These directions can be switched to horizontal also
+   
+   Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: Wrap(
+            spacing: 11,
+            runSpacing: 11, //Cross axis spacing
+            alignment: WrapAlignment.spaceEvenly,
+            //direction: Axis.vertical, //For Column
+            //replaced Row with Wrap
+            children: [
+              Container(
+                width: 150,
+                height: 200,
+                color: colors[0],
+              ),
+              Container(
+                width: 150,
+                height: 200,
+                color: colors[1],
+              ),
+              Container(
+                width: 150,
+                height: 200,
+                color: colors[2],
+              ),
+              Container(
+                width: 150,
+                height: 200,
+                color: colors[3],
+              ),
+              Container(
+                width: 150,
+                height: 200,
+                color: colors[0],
+              ),
+            ],
+          ),
+        )
+
+//////////////////////////////////////////////// SIZED BOX ////////////////////////////////////////////////      
+///Sized box is used when child needs a size, and not any style
+///such as controlling size of button, margin contraints, rows etc.
+///Three types:
+///   1. SizedBox.square
+///   2. SizedBox.expanded (takes width of parent)
+///   3. SizedBox.shrink  (takes min possible dimensions of parent)
+
+   Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 150,
+                height: 80,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text("Hello"),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox.square(
+                dimension: 200,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text("Not hello"),
+                ),
+              ),
+            ],
+          ),
+        )
+
+/////////////////////////////////////////////// RICH TEXT ////////////////////////////////////////////////
+///Whenever we need to style words of the same sentence differently
+///Alternative to using normal text in order to style your app
+///text attribute is for default styling
+///children attribute will contain different TextSpans with different
+///   styles in the same sentence
+   Center(
+            child: RichText(
+                text: TextSpan(
+                    style: TextStyle(
+                      //Default text style
+                      color: Colors.blueGrey,
+                      fontSize: 31,
+                    ),
+                    children: [
+              TextSpan(
+                text: "hello ",
+              ),
+              TextSpan(
+                text: "World! ",
+                style: TextStyle(fontWeight: FontWeight.bold, color: colors[1]),
+              ),
+              TextSpan(
+                text: "Welcome to ",
+                style: TextStyle(
+                    fontWeight: FontWeight.normal, fontStyle: FontStyle.italic),
+              ),
+              TextSpan(
+                text: "Flutter! ",
+                style: TextStyle(fontWeight: FontWeight.bold, color: colors[4]),
+              )
+            ])))
+
+/////////////////////////////////////////////// ICONS ////////////////////////////////////////////////
+/// PNGs can also be used as icons by making a folder in assets
+   Center(
+            child: Icon(
+          Icons.add_a_photo,
+          size: 50,
+          color: Colors.deepPurple,
+        ))
+
+/// More Icons can be availed by using awesome icons   
+/// 1. Search font awesome flutter on Google  
+/// 2. copy the dependency in pubspec.yaml file
+    font_awesome_flutter:  ^10.5.0(latest version)
+///3. From the webite copy the import line
+    import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+///4. Use Icon:   
+    FaIcon(size: 50, FontAwesomeIcons.amazon)
+
+/////////////////////////////////////////////// POSITIONED WIDGET ////////////////////////////////////////////////
+///Wrapped inside a STACK Widget
+  
+  Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: colors[8],
+          child: Center(
+            child: Stack(
+              children: [
+                Positioned(
+                  bottom: 21,
+                  right: 21,
+                  child: Container(
+                    width: 300,
+                    height: 300,
+                    color: colors[1],
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+
+/////////////////////////////////////////////// STATEFUL/ STATELESS ////////////////////////////////////////////////        
+///To convert a Stateless widget to a Stateful widget, First make a stateless widget
+///open context actions and convert it into a stateful widget
+///* Make changes to the counter before or inside the setState() function for them to reflect on UI
+  
+  class DashBoardScreen extends StatefulWidget {
+  @override
+  State<DashBoardScreen> createState() => _DashBoardScreenState(); 
+  //Use createState() Function to call a state class extending State of you class type
+}
+
+class _DashBoardScreenState extends State<DashBoardScreen> { //here
+  int counter = 0;
+  @override
+  Widget build(BuildContext context) {//make a normal class with a Scaffold
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Counter: $counter',
+              style: TextStyle(fontSize: 31),
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                setState(() { //here we will increase the counter inside the setState so it shows changes
+                  counter++;
+                });
+              },
+              child: Icon(Icons.add),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+///////////////////////////////SIMPLE CALCULATOR USING STATEFUL WIDGET //////////////////////////////////////////////// 
+   
+
+   class CalculatorHome extends StatefulWidget {
+  @override
+  State<CalculatorHome> createState() => _CalculatorHomeState();
+}
+
+class _CalculatorHomeState extends State<CalculatorHome> {
+  var textController1 = TextEditingController();
+  var textController2 = TextEditingController();
+
+  var answer = 0.00;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.brown[200],
+      appBar: AppBar(
+        title: Center(child: Text("Calculator")),
+      ),
+      body: Container(
+        color: Colors.white,
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(21),
+              child: Text(
+                "The result is: ${answer.toStringAsFixed(2)}", //toString.fixed() HELPS IN NO OF DIGITS AFTER DECIMAL
+                style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextField(
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              controller: textController1,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextField(
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              controller: textController2,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      var no1 = double.parse(textController1.text.toString()); //HERE WE PARSE THE VALUES OF TEXT FIELDS
+                      //FIRST WE HAVE TO CONVERT TO STRING AND THEN TO INTEGER OR DOUBLE USING DOUBLE.PARSE METHOD
+                      var no2 = double.parse(textController2.text.toString());
+                      answer = no1 + no2;
+                      setState(() {}); //HERE WE RESET STATE
+                    },
+                    child: Text('Add')),
+                ElevatedButton(
+                    onPressed: () {
+                      var no1 = double.parse(textController1.text.toString());
+                      var no2 = double.parse(textController2.text.toString());
+                      answer = no1 - no2;
+                      setState(() {});
+                    },
+                    child: Text('Subtract')),
+                ElevatedButton(
+                    onPressed: () {
+                      var no1 = double.parse(textController1.text.toString());
+                      var no2 = double.parse(textController2.text.toString());
+                      answer = no1 * no2;
+                      setState(() {});
+                    },
+                    child: Text('Multiply')),
+                ElevatedButton(
+                    onPressed: () {
+                      var no1 = double.parse(textController1.text.toString());
+                      var no2 = double.parse(textController2.text.toString());
+                      answer = no1 / no2;
+                      setState(() {});
+                    },
+                    child: Text('Divide')),
+              ],
+            )
+          ],
+        )),
+      ),
+    );
+  }
+}
+
+
+
+///////////////////////////////Constraint Box //////////////////////////////////////////////// 
+///Used in order to define maximum and minimum dimensions of a widget
+    Center(
+          child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minWidth: 200, maxWidth: 700, minHeight: 40),
+              child: ElevatedButton(onPressed: () {}, child: Text("Press"))),
+        )
+
+
+////////////////////////////// Switching Screens ////////////////////////////////////////////////
+/// 1. In material page, home will be the first page opened
+/// 2. To switch screen use:
+    ElevatedButton(
+          child: Text("Next"),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomeScreen();
+                ),
+              );
+            },
+            
+          ),
+/// Screen memory management is in stack formation
+/// first screen on buttom
+/// follows LIFO
+/// To delete top page from stack, or go back to previous screen
+/// we can use:
+    
+    ElevatedButton(
+          child: Text("Next"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+    
+
+////////////////////////////// SPLASH SCREEN ////////////////////////////////////////////////
+///Show page while loading components in background is when splash
+///screen is used
+///We have to use State using StatefulWidget in init() stage
+///Navigator.pushReplacement will be used
+///Using the Timer class, we can automatically change page
+///Instead of using timers, we can also call page when api is loaded,
+///Or when connection with server is established
+   class SplashScreen extends StatefulWidget {
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Timer(
+      Duration(seconds: 2),
+      () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => IntroScreen()),
+        );
+        //push replacement pushes new screen and removes current one
+        //from stack
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        color: Colors.deepOrange,
+        child: Center(
+          child: Text(
+            "Practo",
+            style: TextStyle(
+              fontSize: 70,
+              fontStyle: FontStyle.italic,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
