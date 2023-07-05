@@ -1,4 +1,4 @@
-# flutter_basics
+# Flutter Practice
 
 Basics about flutter
 
