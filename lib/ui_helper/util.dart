@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 TextStyle TextStyle1(
     {Color textColor = Colors.black,
     FontWeight fontWeight = FontWeight.normal}) {
-  return TextStyle(fontSize: 31, fontWeight: FontWeight.bold, color: Colors.grey
-      //blah blah other attributes
-      );
+  return TextStyle(
+    fontSize: 31, fontWeight: FontWeight.bold,
+    //blah blah other attributes
+  );
 }
 
 TextStyle TextStyle2() {

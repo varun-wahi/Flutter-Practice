@@ -37,8 +37,11 @@ class PractoApp extends StatelessWidget {
 }
 
 class MyHomeScreen extends StatelessWidget {
-  var nameController = TextEditingController();
+  var name = 'Varun';
 
+  MyHomeScreen(String name) {
+    this.name = name;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,27 +51,17 @@ class MyHomeScreen extends StatelessWidget {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            TextField(
-              controller: nameController,
+            Text(
+              "Hello, $name!",
+              style: TextStyle1(),
             ),
-            Container(
-              width: 300,
-              height: 300,
-              color: Colors.amber,
-              padding:
-                  EdgeInsets.only(top: 100, bottom: 100, left: 30, right: 30),
-              child: ElevatedButton(
+            ElevatedButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => IntroPage()),
-                  // );
                   Navigator.pop(context);
                 },
-                child: Text("Previous"),
-              ),
-            ),
+                child: Text("Go back")),
           ],
         ),
       ),

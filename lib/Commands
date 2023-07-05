@@ -1472,55 +1472,128 @@ class _CalculatorHomeState extends State<CalculatorHome> {
             },
           ),
     
+////////////////////////////// RANGE SLIDER ////////////////////////////////////
+///Tp pick a range with start and end
+   
+    class RangeSliderExample extends StatefulWidget {
+      const RangeSliderExample({super.key});
 
-////////////////////////////// SPLASH SCREEN ////////////////////////////////////////////////
-///Show page while loading components in background is when splash
-///screen is used
-///We have to use State using StatefulWidget in init() stage
-///Navigator.pushReplacement will be used
-///Using the Timer class, we can automatically change page
-///Instead of using timers, we can also call page when api is loaded,
-///Or when connection with server is established
-   class SplashScreen extends StatefulWidget {
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
+      @override
+      State<RangeSliderExample> createState() => _RangeSliderState();
+    }
 
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+    class _RangeSliderState extends State<RangeSliderExample> {
+      RangeValues currentValues = const RangeValues(0, 100);
 
-    Timer(
-      Duration(seconds: 2),
-      () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => IntroScreen()),
+      @override
+      Widget build(BuildContext context) {
+        return Column(
+          children: [
+            Text(
+              'Start: ${currentValues.start}',
+              style: TextStyle1(),
+            ),
+            Text(
+              'End: ${currentValues.end}',
+              style: TextStyle1(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RangeSlider(
+                values: currentValues,
+                max: 100,
+                divisions: 20,
+                labels: RangeLabels(
+                  currentValues.start.round().toString(),
+                  currentValues.end.round().toString(),
+                ),
+                onChanged: (RangeValues values) {
+                  setState(() {
+                    currentValues = values;
+                  });
+                },
+              ),
+            ),
+          ],
         );
-        //push replacement pushes new screen and removes current one
-        //from stack
-      },
-    );
-  }
+      }
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Colors.deepOrange,
-        child: Center(
-          child: Text(
-            "Practo",
-            style: TextStyle(
-              fontSize: 70,
-              fontStyle: FontStyle.italic,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+
+
+
+
+    ////////////////////////////// SPLASH SCREEN ////////////////////////////////////
+    ///Show page while loading components in background is when splash
+    ///screen is used
+    ///We have to use State using StatefulWidget in init() stage
+    ///Navigator.pushReplacement will be used
+    ///Using the Timer class, we can automatically change page
+    ///Instead of using timers, we can also call page when api is loaded,
+    ///Or when connection with server is established
+      class SplashScreen extends StatefulWidget {
+      @override
+      State<SplashScreen> createState() => _SplashScreenState();
+    }
+
+    class _SplashScreenState extends State<SplashScreen> {
+      @override
+      void initState() {
+        super.initState();
+
+        Timer(
+          Duration(seconds: 2),
+          () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => IntroScreen()),
+            );
+            //push replacement pushes new screen and removes current one
+            //from stack
+          },
+        );
+      }
+
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+          body: Container(
+            color: Colors.deepOrange,
+            child: Center(
+              child: Text(
+                "Practo",
+                style: TextStyle(
+                  fontSize: 70,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
+        );
+      }
+    }
+
+
+////////////////////////////// PASSING DATA FROM ONE SCREEN TO ANOTHER ////////////////////////////////////
+
+///Create a paramerterized constructor and a data variable in the class that recieves the data
+//////In the contructor, there should be the data parameter of suitable dataType
+
+      class MyHomeScreen extends StatelessWidget {
+      var name = 'Varun';
+
+      MyHomeScreen(String name) {
+        this.name = name;
+      }
+      //Rest of class here
+      }
+
+    ///Pass the data item while calling second screen class using navigator.push
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MyHomeScreen(nameController.text.toString()),
+            ),
+        );
