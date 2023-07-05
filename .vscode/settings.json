@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/Programs/Flutter/flutter_basics/windows"
+    "cmake.sourceDirectory": "D:/Programs/Flutter/flutter_basics/windows",
+    "cmake.configureOnOpen": false
 }
